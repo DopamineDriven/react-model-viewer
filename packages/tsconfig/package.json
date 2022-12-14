@@ -1,0 +1,13 @@
+{
+  "name": "@react/model-viewer-tsconfig",
+  "version": "1.0.0",
+  "private": true,
+  "files": [
+    "base.json",
+    "nextjs.json",
+    "node16.json",
+    "react-library.json",
+    "story.json",
+    "studio.json"
+  ]
+}

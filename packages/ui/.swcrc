@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "module": {
+    "strictMode": true,
+    "type": "es6"
+  },
+  "jsc": {
+    "target": "es2020",
+    "loose": true,
+    "parser": {
+      "dts": true,
+      "syntax": "typescript",
+      "tsx": true,
+      "dynamicImport": true
+    },
+    "transform": {
+      "react": {
+        "pragma": "React.createElement",
+        "pragmaFrag": "React.Fragment",
+        "runtime": "automatic",
+        "throwIfNamespace": true,
+        "development": false,
+        "useBuiltins": false
+      }
+    },
+    "preserveAllComments": true,
+    "externalHelpers": true
+  },
+  "minify": false
+}

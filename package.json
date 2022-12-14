@@ -1,0 +1,66 @@
+{
+  "name": "react-model-viewer",
+  "repository": "https://github.com/DopamineDriven/react-model-viewer.git",
+  "author": {
+    "email": "andrew.ross@takeda.com",
+    "name": "Andrew Ross",
+    "url": "https://github.com/DopamineDriven"
+  },
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "packageManager": "yarn@1.22.19",
+  "publishConfig": {
+"access": "public"
+  },
+  "scripts": {
+    "generate:secret": "openssl rand -hex 32",
+    "dev": "turbo run dev --parallel --continue",
+    "turbo:login": "turbo login --sso-team=takeda",
+    "lint": "turbo run lint",
+    "npm:registry": "npm set registry https://registry.npmjs.org",
+    "jfrog:registry": "npm config set @takeda-digital:registry https://takedaazuseast.jfrog.io/artifactory/api/npm/exp-npm-local/",
+    "echo": "node ./.env -r dotenv/config",
+    "sanity:login": "yarn --cwd apps/studio sanity:login",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "test": "echo \"Hello from GitHubCI\"",
+    "python": "source ../../frameworkenv/bin/activate",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "postinstall": "npx patch-package",
+    "build:indexer": "yarn --cwd packages/indexer build",
+    "publish:indexer": "yarn --cwd packages/indexer publish",
+    "build:modelViewer": "yarn --cwd packages/model-viewer build",
+    "publish:modelViewer": "yarn --cwd packages/model-viewer publish",
+    "build:ui": "yarn --cwd packages/ui build",
+    "publish:ui": "yarn --cwd packages/ui publish",
+    "prepare": "husky install && yarn format"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.25.2",
+    "@manypkg/cli": "^0.19.2",
+    "dotenv": "^16.0.3",
+    "dotenv-cli": "^6.0.0",
+    "dotenv-expand": "^9.0.0",
+    "eslint": "^8.29.0",
+    "eslint-config-custom": "*",
+    "eslint-config-turbo": "latest",
+    "husky": "^8.0.2",
+    "patch-package": "^6.5.0",
+    "postinstall-postinstall": "^2.1.0",
+    "prettier": "^2.8.1",
+    "turbo": "latest",
+    "typescript": "^4.9.4"
+  },
+    "require-from-string@^2.0.2": {
+      "optional": true
+    },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}

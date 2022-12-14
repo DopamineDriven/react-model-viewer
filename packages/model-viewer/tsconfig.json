@@ -1,0 +1,6 @@
+{
+  "extends": "@react/model-viewer-tsconfig/react-library.json",
+  "include": ["src", "next-env.d.ts", "src/types/react.d.ts"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {"outDir": "dist", "isolatedModules": true}
+}
