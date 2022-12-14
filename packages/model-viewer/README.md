@@ -1,12 +1,12 @@
-# `@takeda-digital/model-viewer`
+# `@react/model-viewer`
 
-## Model Viewer Release (v1.0.2) 🎉
+## Model Viewer Release (v1.0.0) 🎉
 
 - [An article 📃 I published mid-last week outlining the process in detail](https://dev.to/asross311/a-strongly-typed-google-model-viewer-implementation-in-react-3m5c)
 
 ## Package Overview
 
-#### `@takeda-digital/model-viewer` is a small but powerful package weighing in at ~5kb
+#### `@react/model-viewer` is a small but powerful package weighing in at ~5kb
 
 - This package augments your React namespace to incorporate an `HTMLModelViewerAttributes<T>` property containing an internal `globalThis.HTMLElementTagNameMap['model-viewer']` type -- aka, the `ModelViewerElement` from the `@google/model-viewer` package
 
@@ -28,14 +28,14 @@ yarn add @google/model-viewer
 npm i @google/model-viewer
 ```
 
-- import a `RootScript` element as shown below in `src/pages/_app.tsx`
-- This element injects the root of the app with an async module-script for the package
+### Nextjs users
+
+- import a `Script` element from `next/script` as shown below in `src/pages/_app.tsx`
+- Inject the root of the app with an async module-script for the package
 
 ```tsx
 import "../styles/index.css";
-import type { UIAppProps } from "@takeda-digital/ui";
-import "@takeda-digital/ui/globals.css";
-import { RootScript } from "@takeda-digital/model-viewer";
+import type { AppProps } from "next/app";
 import Script from "next/script";
 /**
  * Shim requestIdleCallback in Safari
@@ -48,13 +48,18 @@ if (
   window.cancelIdleCallback = e => clearTimeout(e);
 }
 
-export default function TakedaDigitalWeb({
+export default function ReactModelViewerNext({
   Component,
   pageProps
-}: UIAppProps<any>) {
+}: AppProps) {
   return (
     <>
-      <RootScript strategy='afterInteractive' />
+      <Script
+        async
+        strategy='afterInteractive'
+        type='module'
+        src='https://unpkg.com/@google/model-viewer@^2.1.1/dist/model-viewer.min.js'
+      />
       <Component {...pageProps} />
     </>
   );
@@ -71,50 +76,30 @@ export default function TakedaDigitalWeb({
 - `src/components/ModelViewer.tsx`
 
 ```tsx
-import {
-  posterPath,
-  ModelViewer,
-  glbPicker,
-  LoadingDots
-} from "@takeda-digital/model-viewer";
+import { ModelViewer } from "@react/model-viewer";
 import { Suspense } from "react";
 
-export const ModelViewerCustom = () => {
+export const ModelViewerComponent = () => {
   return (
     <Suspense fallback={<LoadingDots />}>
-      <div className='min-h-screen min-w-[100vw]' id='card'>
+      <div className='min-h-screen min-w-[100vw]'>
         <ModelViewer
-          src={glbPicker({ glb: "unrealMacBookPro14" })}
+          src={
+            "https://cdn.glitch.com/36cb8393-65c6-408d-a538-055ada20431b/Astronaut.glb"
+          }
           id='viewer'
           shadow-intensity='1'
           camera-controls
           touch-action='pan-y'
-          withCustomButton={true}
-          customButtonOverride={
-            <button
-              slot='ar-button'
-              id='ar-button'
-              className='bg-takeda-red font-normal tracking-wide text-white'>
-              View in your space
-            </button>
-          }
           auto-rotate
           data-ar
+          alt='a 3d astronaut model'
           ar
           ar-status='not-presenting'
           ar-modes='webxr scene-viewer quick-look'
-          poster={posterPath}
-          className='modelViewer'
+          poster={"/path/to/image.png"}
           withArButton={true}></ModelViewer>
       </div>
-    </Suspense>
-  );
-};
-
-export const ModelViewerDefault = () => {
-  return (
-    <Suspense fallback={<LoadingDots />}>
-      <ModelViewer ar src={glbPicker<"surfaceHub">({ glb: "surfaceHub" })} />
     </Suspense>
   );
 };
@@ -128,25 +113,21 @@ export const ModelViewerDefault = () => {
 import Head from "next/head";
 import styles from "../styles/home.module.css";
 import cn from "clsx";
-import {
-  ModelViewerCustom,
-  ModelViewerDefault
-} from "@/components/sanity/hooks/ModelViewer";
+import { ModelViewerComponent } from "@/components/ModelViewer";
 
 function Home() {
   return (
     <>
       <div className={styles.container}>
         <Head>
-          <title>{"Indexer Init."}</title>
-          <meta name='description' content='Indexer Package' />
+          <title>{"Model Viewer Init."}</title>
+          <meta name='description' content='Model Viewer Package' />
           <link rel='icon' href='/favicon.ico' />
         </Head>
         <main className={cn(styles.main)}>
           <section className='whitespace-nowrap'>
-            <div className='grid grid-cols-2'>
-              <ModelViewerCustom />
-              <ModelViewerDefault />
+            <div className='block'>
+              <ModelViewerComponent />
             </div>
           </section>
         </main>
